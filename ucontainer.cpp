@@ -7,6 +7,8 @@
  * http://www.greatpanic.com/code.html
  */
 
+#include <algorithm>
+#include <functional>
 #include <iostream>
 #include <cstring>
 #include <cctype>
@@ -310,9 +312,19 @@ namespace JAD {
     if (type == uc_Map) ismap = true;
     else {
       errno = 0;
-      idx = strtol(piece1.c_str(),NULL,10);
-      if (errno) ismap = true;
-      else ismap = false;
+      char* ptr = NULL;
+      idx = strtol(piece1.c_str(), &ptr, 10);
+      if (errno == 0 && idx == 0) {
+        // This could have been a completely non-numeric string, or could have been a string representation of zero
+        // Find first non-whitespace char of piece1
+        std::string::iterator it_first_nonspace = std::find_if(piece1.begin(), piece1.end(), std::not1(std::ptr_fun<int, int>(std::isspace)));
+        // e.g. number of blank characters to skip
+        size_t chars_to_skip = it_first_nonspace - piece1.begin();
+
+        // If the start of the numeric string is the start of non-whitespace, there wasn't an array index at all (which means this is a map)
+        ismap = ptr == piece1.c_str() + chars_to_skip;
+      } else
+        ismap = false;
     }
 
     if (ismap) {
