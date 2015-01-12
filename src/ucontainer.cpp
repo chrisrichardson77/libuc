@@ -7,6 +7,8 @@
  * http://www.greatpanic.com/code.html
  */
 
+#include <functional>
+#include <algorithm>
 #include <iostream>
 #include <cstring>
 #include <cctype>
@@ -21,9 +23,9 @@
   Limitations :
   All maps, vectors, and strings are references, and copies copy the reference.
   
-  The array behavior is strange. If an index has not been previously
+  The array behaviour is strange. If an index has not been previously
   used, it must be equal to the current size of the array. That is, it must
-  be one past the previously used indicies.
+  be one past the previously used indices.
 
 */
 
@@ -33,8 +35,6 @@
 #else
 #define internal_ucexception(C) construct_exception(C,NULL,NULL,0,this)
 #endif
-
-using namespace std;
 
 namespace JAD {
 
@@ -78,7 +78,7 @@ namespace JAD {
     dirty = true;
   }
 
-  void UniversalContainer::set_value_string(const string& s)
+  void UniversalContainer::set_value_string(const std::string& s)
   {
     //if we already have a string reference
     if (refcount) {
@@ -98,10 +98,10 @@ namespace JAD {
     
     type = uc_String;
     dirty = true;
-    data.str = new string(s);
+    data.str = new std::string(s);
   }
 
-  void UniversalContainer::set_value_wstring(const wstring& s)
+  void UniversalContainer::set_value_wstring(const std::wstring& s)
   {
     //if we already have a string reference
     if (refcount) {
@@ -121,15 +121,15 @@ namespace JAD {
     
     type = uc_WString;
     dirty = true;
-    data.wstr = new wstring(s); 
+    data.wstr = new std::wstring(s);
   }
 
   void UniversalContainer::set_value_cstr(const char* s)
   {
     if (s)
-      set_value_string(string(s));
+      set_value_string(std::string(s));
     else {
-      string tmp;
+      std::string tmp;
       set_value_string(tmp);
     }
   }
@@ -198,14 +198,14 @@ namespace JAD {
     set_value_double(d);
   }
 
-  UniversalContainer::UniversalContainer(const string s)
+  UniversalContainer::UniversalContainer(const std::string s)
   {
     refcount = NULL;
     set_value_string(s);
     return;
   }
 
-  UniversalContainer::UniversalContainer(const wstring s)
+  UniversalContainer::UniversalContainer(const std::wstring s)
   {
     refcount = NULL;
     set_value_wstring(s);
@@ -293,7 +293,7 @@ namespace JAD {
 
   //map brackets does the actual work of operator[string]
   //it understand . notation to reach nested maps
-  UniversalContainer& UniversalContainer::map_brackets(const string s)
+  UniversalContainer& UniversalContainer::map_brackets(const std::string s)
   {
     unsigned long pos;
     bool ismap;
@@ -304,15 +304,25 @@ namespace JAD {
     //split input into first argument and rest
     pos = s.find('.');
     piece1 = s.substr(0,pos);
-    if (pos != string::npos) piece2 = s.substr(pos+1);
+    if (pos != std::string::npos) piece2 = s.substr(pos+1);
 	
     //double check that this isn't really supposed to be a string
     if (type == uc_Map) ismap = true;
     else {
       errno = 0;
-      idx = strtol(piece1.c_str(),NULL,10);
-      if (errno) ismap = true;
-      else ismap = false;
+      char* ptr = NULL;
+      idx = strtol(piece1.c_str(), &ptr, 10);
+      if (errno == 0 && idx == 0) {
+        // This could have been a completely non-numeric string, or could have been a string representation of zero
+        // Find first non-whitespace char of piece1
+        std::string::iterator it_first_nonspace = std::find_if(piece1.begin(), piece1.end(), std::not1(std::ptr_fun<int, int>(std::isspace)));
+        // e.g. number of blank characters to skip
+        size_t chars_to_skip = it_first_nonspace - piece1.begin();
+
+        // If the start of the numeric string is the start of non-whitespace, there wasn't an array index at all (which means this is a map)
+        ismap = ptr == piece1.c_str() + chars_to_skip;
+      } else
+        ismap = false;
     }
 
     if (ismap) {
@@ -331,26 +341,26 @@ namespace JAD {
     }
   }
 
-  UniversalContainer& UniversalContainer::operator[](const string s)
+  UniversalContainer& UniversalContainer::operator[](const std::string s)
   {
     return map_brackets(s);
   }
 
-  UniversalContainer& UniversalContainer::operator[](const wstring w)
+  UniversalContainer& UniversalContainer::operator[](const std::wstring w)
   {
     return map_brackets(convert_wstring_to_string(&w));
   }
 
   UniversalContainer& UniversalContainer::operator[](char* s)
   {
-    string str(s);
+    std::string str(s);
     return map_brackets(str);
   }
 
 
   UniversalContainer& UniversalContainer::operator[](const char* s)
   {
-    string str(s);
+    std::string str(s);
     return map_brackets(str);
   }
 
@@ -413,7 +423,7 @@ namespace JAD {
     return *this;
   }
 
-  UniversalContainer& UniversalContainer::operator=(const string& s)
+  UniversalContainer& UniversalContainer::operator=(const std::string& s)
   {
     if (!(type == uc_String || type == uc_Null))
       throw internal_ucexception(uce_TypeMismatch_Write);
@@ -422,7 +432,7 @@ namespace JAD {
     return *this;
   }
 
-  UniversalContainer& UniversalContainer::operator=(const wstring& s)
+  UniversalContainer& UniversalContainer::operator=(const std::wstring& s)
   {
     if (!(type == uc_WString || type == uc_Null))
       throw internal_ucexception(uce_TypeMismatch_Write);
@@ -456,7 +466,7 @@ namespace JAD {
   }
 
   //utilities for casting strings to longs
-  long UniversalContainer::convert_string_to_long(const string* s) 
+  long UniversalContainer::convert_string_to_long(const std::string* s)
   {
     errno = 0;
     long l = strtol(s->c_str(),NULL,10);
@@ -464,9 +474,9 @@ namespace JAD {
     return l;
   }
 
-  long UniversalContainer::convert_wstring_to_long(const wstring* s)
+  long UniversalContainer::convert_wstring_to_long(const std::wstring* s)
   {
-    string tmp = convert_wstring_to_string(s);
+    std::string tmp = convert_wstring_to_string(s);
     return convert_string_to_long(&tmp);
   }
 
@@ -553,21 +563,21 @@ namespace JAD {
       return convert_wstring_to_string(data.wstr);
     case uc_Integer :
       snprintf(buf,32,"%ld",data.num);
-      return string(buf);
+      return std::string(buf);
       break;
     case uc_Real :
       snprintf(buf,32,"%g",data.real);
-      return string(buf);
+      return std::string(buf);
       break;
     case uc_Boolean :
-      if (data.tf) return string(true_str);
-      else return string(false_str);
+      if (data.tf) return std::string(true_str);
+      else return std::string(false_str);
     case uc_Character :
       snprintf(buf,32,"%c",data.chr);
       return(buf);
       break;
     case uc_Null :
-      return string("null");
+      return std::string("null");
       break;
     case uc_Map :
     case uc_Array :
@@ -576,14 +586,14 @@ namespace JAD {
       throw internal_ucexception(uce_Unknown);
     }
 	
-    return string("error");
+    return std::string("error");
   }
 
   std::wstring UniversalContainer::convert_wstring(void) const
   {
-    wstring retval;
+    std::wstring retval;
     char buf[32];
-    string tmp;
+    std::string tmp;
   
     switch (type) {
     case uc_WString :
@@ -703,7 +713,7 @@ namespace JAD {
     return false;
   }
 
-  double UniversalContainer::convert_string_to_double(const string* s) 
+  double UniversalContainer::convert_string_to_double(const std::string* s)
   {
     double retval;
     char* ptr;
@@ -716,9 +726,9 @@ namespace JAD {
     return retval;
   }
 
-  double UniversalContainer::convert_wstring_to_double(const wstring* s) 
+  double UniversalContainer::convert_wstring_to_double(const std::wstring* s)
   {
-    string tmp = convert_wstring_to_string(s);
+    std::string tmp = convert_wstring_to_string(s);
     return convert_string_to_double(&tmp);
   }
 
@@ -794,7 +804,7 @@ namespace JAD {
   //kind of a string constructor. Callable only on a null container.
   //works through various options to figure out if the string 
   //is an integer, number, boolean, or character.
-  void UniversalContainer::string_interpret(const string s)
+  void UniversalContainer::string_interpret(const std::string s)
   {
     const char* str = s.c_str();
     char* end;
@@ -967,7 +977,7 @@ namespace JAD {
   }
 
   //true if this is a map, and it contains the given key
-  bool UniversalContainer::exists(const string key) const
+  bool UniversalContainer::exists(const std::string key) const
   {
     if (type == uc_Map) return (data.map->count(key) > 0);
     else return false;
@@ -1003,7 +1013,7 @@ namespace JAD {
   }
 
   //delete a key from a map
-  bool UniversalContainer::remove(const string key)
+  bool UniversalContainer::remove(const std::string key)
   {
     if (type != uc_Map) throw internal_ucexception(uce_TypeMismatch_Read);
     UniversalMap::iterator pos = data.map->find(key);
@@ -1143,9 +1153,9 @@ namespace JAD {
 
   //sizeof(wchar_t) differs for windows/unix, so we go through some
   //gyrations in an attempt to make this work everywhere
-  string UniversalContainer::convert_wstring_to_string(const wstring* wstr)
+  std::string UniversalContainer::convert_wstring_to_string(const std::wstring* wstr)
   {
-    string s;
+    std::string s;
     wchar_t w,t;
 
     wchar_t mask = -1;
@@ -1163,12 +1173,12 @@ namespace JAD {
     return s;
   }
  
-  wstring UniversalContainer::convert_string_to_wstring(const string* s) 
+  std::wstring UniversalContainer::convert_string_to_wstring(const std::string* s)
   {
     wchar_t* ws = new wchar_t[s->length()];
     for (unsigned i = 0; i < s->length(); i++)
       ws[i] = static_cast<wchar_t>((*s)[i]);
-    wstring wstr(ws);
+    std::wstring wstr(ws);
     return wstr;
   }
 
