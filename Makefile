@@ -19,7 +19,7 @@ ifeq ($(MYSQL),YES)
 OPT_FILES += ucsqlite.o
 endif
 
-example : libuc.a example.o
+example : example.o libuc.a
 	$(LINKXX) -o $@ $^
 
 
