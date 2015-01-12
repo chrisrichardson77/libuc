@@ -9,8 +9,9 @@
 
 /* Routines to use Buffers with curl. */
 
-#include <curl/curl.h>
 #include "buffer.h"
+#include <curl/curl.h>
+#include <cstring>
 
 namespace JAD {
 
