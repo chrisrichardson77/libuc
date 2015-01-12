@@ -16,7 +16,7 @@
 
 /*
   This file contains member definitions for the buffer
-  class. buffer_util.cpp contains definitons for routines to interface
+  class. buffer_util.cpp contains definitions for routines to interface
   buffers to actual streams and files. buffer_curl.cpp contains
   routines for sending buffers over curl handles.
 */

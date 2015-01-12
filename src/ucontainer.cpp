@@ -316,7 +316,7 @@ namespace JAD {
     }
 
     if (ismap) {
-      if (type == uc_Null) init_map(); //if this is my first apparence, setup
+      if (type == uc_Null) init_map(); //if this is my first appearance, setup
       if (type != uc_Map)
 	throw internal_ucexception(uce_Scalar_as_Collection);
       if (piece2 == "") return (*(data.map))[piece1];

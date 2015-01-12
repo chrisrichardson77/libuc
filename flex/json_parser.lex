@@ -1,4 +1,3 @@
-%option outfile="ucoder_json.cpp"
 %option c++
 %option noyywrap
 

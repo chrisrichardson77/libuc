@@ -9,7 +9,7 @@
 
 /*
   Routines to match buffers with FILE*, system handles (sockets), iostreams.
-  Also includes facilites for base64 encoding.
+  Also includes facilities for base64 encoding.
  */
 
 #include <stdio.h>
