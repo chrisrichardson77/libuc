@@ -1,0 +1,16 @@
+# - Config file for the UniversalContainer package
+# - defines the following variables
+#  UC_INCLUDE_DIRS - include directories
+#  UC_LIBRARIES    - libraries to link against
+ 
+# Compute paths
+get_filename_component(UC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(UC_INCLUDE_DIRS @CONF_INCLUDE_DIRS@)
+ 
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET uc AND NOT UC_BINARY_DIR)
+  include("${UC_CMAKE_DIR}/UcTargets.cmake")
+endif()
+ 
+# These are IMPORTED targets created by UcTargets.cmake
+set(UC_LIBRARIES @PROJECT_NAME@)

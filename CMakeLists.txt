@@ -1,28 +1,25 @@
-
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.2)
 
 PROJECT(uc)
 
 OPTION(BUILD_EXAMPLES "Build example programs" OFF)
-
-#SET(CMAKE_CXX_FLAGS "-fPIC -Wall")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+set(INSTALL_CMAKE_DIR lib/CMake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
 
 INCLUDE(version.cmake)
 
-LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules")
 
 FIND_PACKAGE(MySQL)
 FIND_PACKAGE(Sqlite3)
 FIND_PACKAGE(FLEX)
-FIND_PACKAGE(CURL REQUIRED)
+FIND_PACKAGE(CURL)
 
 SET(${PROJECT_NAME}_SRCS
 	src/buffer.cpp
-	src/buffer_curl.cpp
 	src/buffer_util.cpp
 	src/string_util.cpp
 	src/uccontract.cpp
-	src/uc_curl.cpp
 	src/ucdb.cpp
 	src/ucio.cpp
 	src/ucoder_bin.cpp
@@ -34,8 +31,8 @@ SET(${PROJECT_NAME}_SRCS
 )
 
 # Flex
-# If we found the flex command, generate ucoder_json.cpp from ucoder_json.flex
-# otherwise, use the fallback (which has perhaps incorrectly been under revision control
+# If we found the flex command, generate ucoder_json.cpp from json_parser.lex
+# otherwise, use the fallback (which has (perhaps incorrectly) been under revision control
 # throughout project history)
 IF (FLEX_FOUND)
 	MESSAGE(STATUS "Flex found: ucoder_json will be generated") 
@@ -49,7 +46,7 @@ ENDIF (FLEX_FOUND)
 IF (MYSQL_FOUND)
 	MESSAGE(STATUS "Found MySQL: ${MYSQL_LIBRARY}")
 
-	SET(${PROJECT_NAME}_SRCS ${${PROJECT_NAME}_SRCS} ucmysql.cpp)
+	SET(${PROJECT_NAME}_SRCS ${${PROJECT_NAME}_SRCS} src/ucmysql.cpp)
 
 	INCLUDE_DIRECTORIES(${MYSQL_INCLUDE_DIR})
 	SET(${PROJECT_NAME}_LIBS ${${PROJECT_NAME}_LIBS} ${MYSQL_LIBRARIES})
@@ -61,12 +58,22 @@ ENDIF ()
 IF (SQLITE3_FOUND)
 #	MESSAGE(STATUS "Found Sqlite3: ${SQLITE3_LIBRARY}") # For some reason the FIND_PACKAGE SQLITE3_FIND_QUIETLY switch doesn't seem to work and this message will already have been displayed
 
-	SET(${PROJECT_NAME}_SRCS ${${PROJECT_NAME}_SRCS} ucsqlite.cpp)
+	SET(${PROJECT_NAME}_SRCS ${${PROJECT_NAME}_SRCS} src/ucsqlite.cpp)
 
-	INCLUDE_DIRECTORIES(${SQLITE_INCLUDE_DIR})
-	SET(${PROJECT_NAME}_LIBS ${${PROJECT_NAME}_LIBS} ${SQLITE_LIBRARIES})
+	INCLUDE_DIRECTORIES(${SQLITE3_INCLUDE_DIR})
+	SET(${PROJECT_NAME}_LIBS ${${PROJECT_NAME}_LIBS} ${SQLITE3_LIBRARY})
 ELSE ()
 	MESSAGE(STATUS "SqLite not found - skipping support.")
+ENDIF ()
+
+# Curl integration
+IF (CURL_FOUND)
+	SET(${PROJECT_NAME}_SRCS ${${PROJECT_NAME}_SRCS} src/buffer_curl.cpp src/uc_curl.cpp)
+
+	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIR})
+	SET(${PROJECT_NAME}_LIBS ${${PROJECT_NAME}_LIBS} ${CURL_LIBRARIES})
+ELSE ()
+	MESSAGE(STATUS "Curl not found - skipping support.")
 ENDIF ()
 
 INCLUDE_DIRECTORIES(include)
@@ -77,23 +84,57 @@ SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
 	VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}"
 	OUTPUT_NAME ${PROJECT_NAME}
 	CLEAN_DIRECT_OUTPUT 1)
-INSTALL(TARGETS ${PROJECT_NAME} DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+INSTALL(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Targets
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+INSTALL(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 
 IF (BUILD_EXAMPLES)
-	SET(EXAMPLE_SRCS
-		examples/example.cpp
-	)
-	
+	SET(EXAMPLE_SRCS examples/example.cpp)
 	ADD_EXECUTABLE(example ${EXAMPLE_SRCS})
 	TARGET_LINK_LIBRARIES(example ${PROJECT_NAME} ${CURL_LIBRARIES})
 	
-	SET(CONTRACT_EXAMPLE_SRCS
-		examples/contract_example.cpp
-	)	
+	SET(CONTRACT_EXAMPLE_SRCS examples/contract_example.cpp)	
 	ADD_EXECUTABLE(contract_example ${CONTRACT_EXAMPLE_SRCS})
 	TARGET_LINK_LIBRARIES(contract_example ${PROJECT_NAME} ${CURL_LIBRARIES})
 	
 	CONFIGURE_FILE(examples/contract.json ${CMAKE_BINARY_DIR}/contract.json COPY_ONLY)
 	CONFIGURE_FILE(examples/data.json ${CMAKE_BINARY_DIR}/data.json COPY_ONLY)
 ENDIF()
+
+# Make relative paths absolute
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+# Add all targets to the build-tree export set
+export(TARGETS ${PROJECT_NAME} FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
+
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+export(PACKAGE ${PROJECT_NAME})
+
+# Create the UcConfig.cmake and UcConfigVersion files
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
+# ... for the build tree
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}/UcConfig.cmake" @ONLY)
+
+# ... for the install tree
+set(CONF_INCLUDE_DIRS "\${UC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UcConfig.cmake" @ONLY)
+  
+# ... for both
+configure_file(cmake/UcConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/UcConfigVersion.cmake" @ONLY)
+
+# Install the UcConfig.cmake and UcConfigVersion.cmake
+install(FILES
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UcConfig.cmake"
+  "${PROJECT_BINARY_DIR}/UcConfigVersion.cmake"
+  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+  
+# Install the export set for use with the install-tree
+install(EXPORT ${PROJECT_NAME}Targets DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
