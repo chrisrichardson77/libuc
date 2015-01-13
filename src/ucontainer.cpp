@@ -7,8 +7,8 @@
  * http://www.greatpanic.com/code.html
  */
 
-#include <functional>
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <cstring>
 #include <cctype>
@@ -1225,11 +1225,12 @@ namespace JAD {
     case uc_Map :
       mend = data.map->end();
       for (im = data.map->begin(); im != mend; im++) 
-	im->second.clean();
+        im->second.clean();
+      // TODO Is this supposed to be a fall-through?
     case uc_Array :
       aend = data.ray->end();
       for (ia = data.ray->begin(); ia != aend; ia++)
-	ia->clean(); 
+        ia->clean();
     }
   }
 
