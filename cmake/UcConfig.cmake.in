@@ -13,4 +13,4 @@ if(NOT TARGET uc AND NOT UC_BINARY_DIR)
 endif()
  
 # These are IMPORTED targets created by UcTargets.cmake
-set(UC_LIBRARIES @PROJECT_NAME@)
+set(UC_LIBRARIES @PROJECT_NAME@ @Uc_LIBS@)
