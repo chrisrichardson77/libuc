@@ -4,7 +4,7 @@ PROJECT(Uc)
 
 OPTION(BUILD_EXAMPLES "Build example programs" OFF)
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(INSTALL_CMAKE_DIR lib/CMake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
+set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
 
 INCLUDE(version.cmake)
 
