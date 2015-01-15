@@ -37,7 +37,7 @@ namespace JAD {
 	result |= ucc_EXTRA_MAP_ELEMENT;
       }
     }
-    if (req_count != required->size())
+    if (required != NULL && req_count != required->size())
       result |= ucc_MISSING_REQUIRED_MAP_ELEMENT;
     
     return result;
