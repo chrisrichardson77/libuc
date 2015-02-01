@@ -3,6 +3,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.8.2)
 PROJECT(Uc)
 
 OPTION(BUILD_EXAMPLES "Build example programs" OFF)
+option(BUILD_UNIT_TESTS "Include unit tests" ON)
+option(BUILD_SYSTEM_TESTS "Include system tests" OFF)
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
 
@@ -138,3 +140,5 @@ install(FILES
   
 # Install the export set for use with the install-tree
 install(EXPORT ${PROJECT_NAME}Targets DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+
+ADD_SUBDIRECTORY(tests)
