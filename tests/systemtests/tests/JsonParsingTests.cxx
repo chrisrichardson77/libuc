@@ -56,6 +56,32 @@ TEST(JsonParsingTests, parseJsonStringValueWithCurlyBraces) {
   }
 }
 
+TEST(JsonParsingTests, parseJsonStringValueWithColons) {
+  std::string json("{\"key\" : \"{value:value}\"}");
+
+  JAD::Buffer buffer(const_cast<char*>(json.c_str()));
+  try {
+    JAD::uc_decode_json(&buffer);
+
+  } catch (JAD::UniversalContainer& ex) {
+    FAIL() << "Exception thrown while parsing json string:"
+        << static_cast<std::string>(ex["message"]);
+  }
+}
+
+TEST(JsonParsingTests, parseJsonStringValueWithCommas) {
+  std::string json("{\"key\" : \"{value,value}\"}");
+
+  JAD::Buffer buffer(const_cast<char*>(json.c_str()));
+  try {
+    JAD::uc_decode_json(&buffer);
+
+  } catch (JAD::UniversalContainer& ex) {
+    FAIL() << "Exception thrown while parsing json string:"
+        << static_cast<std::string>(ex["message"]);
+  }
+}
+
 TEST(JsonParsingTests, parseMultiLineJsonValues) {
   std::string json("{\n\"key\" : \"value\",\n \"key2\" : \"value2\"\n}");
 
