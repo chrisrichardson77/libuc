@@ -1,6 +1,6 @@
 project(systemtests CXX)
 
-include_directories("../../src" ${CMAKE_CURRENT_BINARY_DIR} ${GTEST_BOTH_INCLUDE_DIRS})
+include_directories("../../src" "../../include" ${CMAKE_CURRENT_BINARY_DIR} ${GTEST_BOTH_INCLUDE_DIRS})
 
 FILE (GLOB_RECURSE test_SRCS *.cxx)
 

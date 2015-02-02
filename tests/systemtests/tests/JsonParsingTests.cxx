@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 
-#include <uc/ucontainer.h>
-#include <uc/ucio.h>
-#include <uc/buffer.h>
+#include <ucontainer.h>
+#include <ucio.h>
+#include <buffer.h>
 
 TEST(JsonParsingTests, parseSimpleJson) {
   std::string json("{\"key\" : \"value\"}");
