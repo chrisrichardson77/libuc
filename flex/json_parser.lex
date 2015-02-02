@@ -40,7 +40,7 @@ NUMBER {INTEGER}({FRACTION}{EXPONENT}?)?
 	
 ECHAR "\\"[nrtfb\\\"]
 HEXCHAR "\\u"[0-9a-fA-F]{4}
-PCHAR [\[\]a-zA-Z0-9<>()+ =/!?@#:$%^&*\_\.\-']
+PCHAR [\[\]a-zA-Z0-9<>()+ =/!?@#:$%^&*\_\.\-'{}]
 CHARACTER {ECHAR}|{HEXCHAR}|{PCHAR}
 STRING "\""{CHARACTER}*"\""
 NEWLINE "\n"

@@ -15,9 +15,7 @@ endif ()
 
 CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/SystemTestConstantsGenerated.h.in" "${CMAKE_CURRENT_BINARY_DIR}/SystemTestConstantsGenerated.h")
 
-ADD_CUSTOM_TARGET(systemtest
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}" "--gtest_output=xml"	
-    ${GTEST_FILTER}
-    DEPENDS ${PROJECT_NAME} googlemock
+ADD_CUSTOM_TARGET(systemtest "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}" "--gtest_output=xml" ${GTEST_FILTER}
+    DEPENDS ${PROJECT_NAME} 
     COMMENT "Executing system tests..."
     VERBATIM SOURCES ${test_SRCS})

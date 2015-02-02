@@ -7,7 +7,7 @@
  * http://www.greatpanic.com/code.html
  */
 /*
-  Serializiation and deserializiation declarations, and convinence wrappers.
+  Serializiation and deserializiation declarations, and convenience wrappers.
  */
 
 #ifndef _UCIO_H_
