@@ -1,5 +1,11 @@
 project(unittests CXX)
 
+# Set the target name policy to allow the reserved target name "test" to be used
+if (POLICY CMP0037)
+    message(STATUS "Setting target name policy to OLD (allowing use of reserved target names)")
+    cmake_policy(SET CMP0037 OLD)
+endif ()
+
 IF (NOT CMAKE_CROSSCOMPILING)    
     include_directories("../../src/" "../../include" ${GTEST_BOTH_INCLUDE_DIRS})
     
