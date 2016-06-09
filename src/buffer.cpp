@@ -59,9 +59,9 @@ namespace JAD {
   
   //This private routine makes sure that there are need bytes
   //available to a write operation. If the current allocation is
-  //insufficent, it will keep doubling the allocation size until it is
-  //sufficent. Then it allocates the block, copies the data over, and
-  //frees the previoud allocation. If it fails, it return false.
+  //insufficient, it will keep doubling the allocation size until it is
+  //sufficient. Then it allocates the block, copies the data over, and
+  //frees the previous allocation. If it fails, it return false.
   bool Buffer::ensure_space(size_t need)
   {
     size_t total_need = wpos + need;

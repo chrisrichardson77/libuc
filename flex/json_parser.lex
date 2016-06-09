@@ -110,47 +110,47 @@ namespace JAD {
 
     while (str[i]) {
       if (str[i] != '\\') {
-	if (str[i] == '"') break;
-	w.push_back(str[i]);
-	s.push_back(str[i]);
-	i++;
-	continue;
+        if (str[i] == '"') break;
+        w.push_back(str[i]);
+        s.push_back(str[i]);
+        i++;
+        continue;
       }
-      //else char = 
-      i++; 
+      //else char =
+      i++;
       switch(str[i]) {
       case '/' :
       case '\\' :
-      case '"' : 
-	w.push_back(str[i]);
-	s.push_back(str[i]);
-	break;
+      case '"' :
+        w.push_back(str[i]);
+        s.push_back(str[i]);
+        break;
       case 'n' :
-	w.push_back('\n');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\n');
+        s.push_back('\n');
+        break;
       case 't' :
-	w.push_back('\t');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\t');
+        s.push_back('\t');
+        break;
       case 'r' :
-	w.push_back('\r');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\r');
+        s.push_back('\r');
+        break;
       case 'b' :
-	w.push_back('\b');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\b');
+        s.push_back('\b');
+        break;
       case 'f' :
-	w.push_back('\f');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\f');
+        s.push_back('\f');
+        break;
       case 'u' :
-	sscanf(str+i+1,"%02X",&wc);
-	w.push_back(wc);
-	need_wstr = true;
-	i += 2;
-	break;
+        sscanf(str + i + 1,"%02X",&wc);
+        w.push_back(wc);
+        need_wstr = true;
+        i += 2;
+        break;
       }
       i++;
     }
@@ -176,29 +176,29 @@ namespace JAD {
       symbol = lex->yylex();
       uc.init_map();
       while (symbol != JSON_DECODE_CLOSE_MAP) {
-	if (symbol != JSON_DECODE_STRING) 
-	  throw ucexception(uce_Deserialization_Error);
-	tmp = unescape_json_string(lex->get_text());
-	key = static_cast<string>(tmp);
-	symbol = lex->yylex();
-	if (symbol != JSON_DECODE_KVSEP)
-	  throw ucexception(uce_Deserialization_Error);
-	uc[key] = uc_decode_json(lex);
-	symbol = lex->yylex();
-	if (symbol == JSON_DECODE_COMMA)
-	  symbol = lex->yylex();
-      }
-      return uc;
-    case JSON_DECODE_OPEN_ARRAY :
-      uc.init_array();
-      symbol = lex->yylex();
-      while (symbol != JSON_DECODE_CLOSE_ARRAY) {
-	uc[idx] = uc_decode_json(lex,symbol);
+        if (symbol != JSON_DECODE_STRING)
+          throw ucexception(uce_Deserialization_Error);
+        tmp = unescape_json_string(lex->get_text());
+        key = static_cast<string>(tmp);
         symbol = lex->yylex();
-        if (symbol == JSON_DECODE_CLOSE_ARRAY) break;
-        if (symbol != JSON_DECODE_COMMA) throw ucexception(uce_Deserialization_Error);
-        symbol = JSON_NO_SYMBOL;
-	idx++;
+        if (symbol != JSON_DECODE_KVSEP)
+          throw ucexception(uce_Deserialization_Error);
+        uc[key] = uc_decode_json(lex);
+        symbol = lex->yylex();
+        if (symbol == JSON_DECODE_COMMA)
+          symbol = lex->yylex();
+            }
+            return uc;
+          case JSON_DECODE_OPEN_ARRAY :
+            uc.init_array();
+            symbol = lex->yylex();
+            while (symbol != JSON_DECODE_CLOSE_ARRAY) {
+        uc[idx] = uc_decode_json(lex,symbol);
+              symbol = lex->yylex();
+              if (symbol == JSON_DECODE_CLOSE_ARRAY) break;
+              if (symbol != JSON_DECODE_COMMA) throw ucexception(uce_Deserialization_Error);
+              symbol = JSON_NO_SYMBOL;
+        idx++;
       }
       return uc;
     case JSON_DECODE_STRING :

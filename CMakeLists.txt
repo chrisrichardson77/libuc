@@ -128,7 +128,7 @@ export(PACKAGE ${PROJECT_NAME})
 # Create the UcConfig.cmake and UcConfigVersion files
 file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
 # ... for the build tree
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" "${PROJECT_BINARY_DIR}")
 configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}/UcConfig.cmake" @ONLY)
 
 # ... for the install tree

@@ -9,7 +9,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 39
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -58,7 +58,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -89,12 +88,15 @@ typedef unsigned int flex_uint32_t;
 #define UINT32_MAX             (4294967295U)
 #endif
 
+#endif /* ! C99 */
+
 #endif /* ! FLEXINT_H */
 
 /* begin standard C++ headers. */
 #include <iostream> 
 #include <errno.h>
 #include <cstdlib>
+#include <cstdio>
 #include <cstring>
 /* end standard C++ headers. */
 
@@ -152,7 +154,15 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k.
+ * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
+ * Ditto for the __ia64__ case accordingly.
+ */
+#define YY_BUF_SIZE 32768
+#else
 #define YY_BUF_SIZE 16384
+#endif /* __ia64__ */
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -176,6 +186,7 @@ extern yy_size_t yyleng;
 #define EOB_ACT_LAST_MATCH 2
 
     #define YY_LESS_LINENO(n)
+    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -376,10 +387,10 @@ static yyconst flex_int32_t yy_ec[256] =
 
 static yyconst flex_int32_t yy_meta[37] =
     {   0,
-        1,    1,    1,    2,    2,    3,    2,    1,    2,    4,
+        1,    1,    1,    2,    2,    3,    2,    2,    2,    4,
         2,    4,    4,    4,    4,    2,    2,    2,    2,    2,
         2,    2,    3,    2,    4,    5,    4,    5,    2,    3,
-        3,    2,    3,    3,    1,    1
+        3,    2,    3,    3,    2,    2
     } ;
 
 static yyconst flex_int16_t yy_base[57] =
@@ -446,7 +457,7 @@ static yyconst flex_int16_t yy_chk[127] =
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "json_parser.lex"
-#line 6 "json_parser.lex"
+#line 5 "json_parser.lex"
 /*
  * UniversalContainer library.
  * Copyright Jason Denton, 2008,2010.
@@ -475,7 +486,7 @@ static yyconst flex_int16_t yy_chk[127] =
 
    static int line_number = 1;
 
-#line 479 "ucoder_json.cpp"
+#line 490 "ucoder_json.cpp"
 
 #define INITIAL 0
 
@@ -505,7 +516,12 @@ static int yy_flex_strlen (yyconst char * );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k */
+#define YY_READ_BUF_SIZE 16384
+#else
 #define YY_READ_BUF_SIZE 8192
+#endif /* __ia64__ */
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -575,10 +591,6 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 59 "json_parser.lex"
-
-#line 581 "ucoder_json.cpp"
-
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -605,6 +617,11 @@ YY_DECL
 		yy_load_buffer_state(  );
 		}
 
+	{
+#line 58 "json_parser.lex"
+
+#line 624 "ucoder_json.cpp"
+
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
@@ -621,7 +638,7 @@ YY_DECL
 yy_match:
 		do
 			{
-			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
+			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)] ;
 			if ( yy_accept[yy_current_state] )
 				{
 				(yy_last_accepting_state) = yy_current_state;
@@ -662,76 +679,76 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 60 "json_parser.lex"
+#line 59 "json_parser.lex"
 return JSON_DECODE_OPEN_MAP;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 61 "json_parser.lex"
+#line 60 "json_parser.lex"
 return JSON_DECODE_CLOSE_MAP;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 62 "json_parser.lex"
+#line 61 "json_parser.lex"
 return JSON_DECODE_OPEN_ARRAY;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 63 "json_parser.lex"
+#line 62 "json_parser.lex"
 return JSON_DECODE_CLOSE_ARRAY;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 64 "json_parser.lex"
+#line 63 "json_parser.lex"
 return JSON_DECODE_KVSEP;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 65 "json_parser.lex"
+#line 64 "json_parser.lex"
 return JSON_DECODE_STRING;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 66 "json_parser.lex"
+#line 65 "json_parser.lex"
 return JSON_DECODE_NUMBER;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 67 "json_parser.lex"
+#line 66 "json_parser.lex"
 return JSON_DECODE_LITERAL;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 68 "json_parser.lex"
+#line 67 "json_parser.lex"
 return JSON_DECODE_COMMA;
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 69 "json_parser.lex"
+#line 68 "json_parser.lex"
 line_number++;
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 70 "json_parser.lex"
+#line 69 "json_parser.lex"
 return JSON_DEOCDE_EOF;
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 71 "json_parser.lex"
+#line 70 "json_parser.lex"
 //eat whitespace and commas
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 72 "json_parser.lex"
+#line 71 "json_parser.lex"
 return JSON_DECODE_ERROR;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 73 "json_parser.lex"
+#line 72 "json_parser.lex"
 ECHO;
 	YY_BREAK
-#line 735 "ucoder_json.cpp"
+#line 752 "ucoder_json.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -860,6 +877,7 @@ ECHO;
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
+	} /* end of user's declarations */
 } /* end of yylex */
 
 /* The contents of this function are C++ specific, so the () macro is not used.
@@ -1011,7 +1029,7 @@ int yyFlexLexer::yy_get_next_buffer()
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
 
 			int yy_c_buf_p_offset =
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
@@ -1144,7 +1162,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 50);
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
 
     void yyFlexLexer::yyunput( int c, register char* yy_bp)
@@ -1226,7 +1244,7 @@ int yyFlexLexer::yy_get_next_buffer()
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( yywrap(  ) )
-						return 0;
+						return EOF;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -1360,8 +1378,6 @@ int yyFlexLexer::yy_get_next_buffer()
 
 	yyfree((void *) b  );
 }
-
-extern "C" int isatty (int );
 
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
@@ -1629,7 +1645,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 73 "json_parser.lex"
+#line 71 "json_parser.lex"
 
 
 
@@ -1672,47 +1688,47 @@ namespace JAD {
 
     while (str[i]) {
       if (str[i] != '\\') {
-	if (str[i] == '"') break;
-	w.push_back(str[i]);
-	s.push_back(str[i]);
-	i++;
-	continue;
+        if (str[i] == '"') break;
+        w.push_back(str[i]);
+        s.push_back(str[i]);
+        i++;
+        continue;
       }
-      //else char = 
-      i++; 
+      //else char =
+      i++;
       switch(str[i]) {
       case '/' :
       case '\\' :
-      case '"' : 
-	w.push_back(str[i]);
-	s.push_back(str[i]);
-	break;
+      case '"' :
+        w.push_back(str[i]);
+        s.push_back(str[i]);
+        break;
       case 'n' :
-	w.push_back('\n');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\n');
+        s.push_back('\n');
+        break;
       case 't' :
-	w.push_back('\t');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\t');
+        s.push_back('\t');
+        break;
       case 'r' :
-	w.push_back('\r');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\r');
+        s.push_back('\r');
+        break;
       case 'b' :
-	w.push_back('\b');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\b');
+        s.push_back('\b');
+        break;
       case 'f' :
-	w.push_back('\f');
-	s.push_back(str[i]);
-	break;
+        w.push_back('\f');
+        s.push_back('\f');
+        break;
       case 'u' :
-	sscanf(str+i+1,"%02X",&wc);
-	w.push_back(wc);
-	need_wstr = true;
-	i += 2;
-	break;
+        sscanf(str + i + 1,"%02X",&wc);
+        w.push_back(wc);
+        need_wstr = true;
+        i += 2;
+        break;
       }
       i++;
     }
@@ -1738,29 +1754,29 @@ namespace JAD {
       symbol = lex->yylex();
       uc.init_map();
       while (symbol != JSON_DECODE_CLOSE_MAP) {
-	if (symbol != JSON_DECODE_STRING) 
-	  throw ucexception(uce_Deserialization_Error);
-	tmp = unescape_json_string(lex->get_text());
-	key = static_cast<string>(tmp);
-	symbol = lex->yylex();
-	if (symbol != JSON_DECODE_KVSEP)
-	  throw ucexception(uce_Deserialization_Error);
-	uc[key] = uc_decode_json(lex);
-	symbol = lex->yylex();
-	if (symbol == JSON_DECODE_COMMA)
-	  symbol = lex->yylex();
-      }
-      return uc;
-    case JSON_DECODE_OPEN_ARRAY :
-      uc.init_array();
-      symbol = lex->yylex();
-      while (symbol != JSON_DECODE_CLOSE_ARRAY) {
-	uc[idx] = uc_decode_json(lex,symbol);
+        if (symbol != JSON_DECODE_STRING)
+          throw ucexception(uce_Deserialization_Error);
+        tmp = unescape_json_string(lex->get_text());
+        key = static_cast<string>(tmp);
         symbol = lex->yylex();
-        if (symbol == JSON_DECODE_CLOSE_ARRAY) break;
-        if (symbol != JSON_DECODE_COMMA) throw ucexception(uce_Deserialization_Error);
-        symbol = JSON_NO_SYMBOL;
-	idx++;
+        if (symbol != JSON_DECODE_KVSEP)
+          throw ucexception(uce_Deserialization_Error);
+        uc[key] = uc_decode_json(lex);
+        symbol = lex->yylex();
+        if (symbol == JSON_DECODE_COMMA)
+          symbol = lex->yylex();
+            }
+            return uc;
+          case JSON_DECODE_OPEN_ARRAY :
+            uc.init_array();
+            symbol = lex->yylex();
+            while (symbol != JSON_DECODE_CLOSE_ARRAY) {
+        uc[idx] = uc_decode_json(lex,symbol);
+              symbol = lex->yylex();
+              if (symbol == JSON_DECODE_CLOSE_ARRAY) break;
+              if (symbol != JSON_DECODE_COMMA) throw ucexception(uce_Deserialization_Error);
+              symbol = JSON_NO_SYMBOL;
+        idx++;
       }
       return uc;
     case JSON_DECODE_STRING :
