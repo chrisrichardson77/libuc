@@ -4,7 +4,7 @@ include(ExternalProject)
 ExternalProject_Add(
     googlemock
     GIT_REPOSITORY
-        git@github.com:google/googletest.git
+        https://github.com/google/googletest.git
         TIMEOUT 30
     #PATCH_COMMAND svn patch ${CMAKE_SOURCE_DIR}/gtest.patch ${CMAKE_BINARY_DIR}/ThirdParty/src/googlemock/gtest
     # Force separate output paths for debug and release builds to allow easy
