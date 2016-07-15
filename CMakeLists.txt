@@ -41,7 +41,7 @@ IF (FLEX_FOUND)
 	FLEX_TARGET(flex_json flex/json_parser.lex ${CMAKE_BINARY_DIR}/ucoder_json.cpp)
 ELSE (FLEX_FOUND)
 	MESSAGE(WARNING "Flex not found: will use fallback 'flex/ucoder_json.cpp.fallback'")
-	CONFIGURE_FILE(flex/ucoder_json.cpp.fallback ${CMAKE_BINARY_DIR}/ucoder_json.cpp COPY_ONLY)
+	CONFIGURE_FILE(flex/ucoder_json.cpp.fallback ${CMAKE_BINARY_DIR}/ucoder_json.cpp COPYONLY)
 ENDIF (FLEX_FOUND)
 
 # MySql integration
