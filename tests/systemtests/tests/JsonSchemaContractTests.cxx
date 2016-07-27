@@ -1,9 +1,9 @@
 #include <gmock/gmock.h>
 
-#include <uccontract.h>
-#include <ucontainer.h>
-#include <ucio.h>
-#include <buffer.h>
+#include <uc/uccontract.h>
+#include <uc/ucontainer.h>
+#include <uc/ucio.h>
+#include <uc/buffer.h>
 
 #include <string>
 

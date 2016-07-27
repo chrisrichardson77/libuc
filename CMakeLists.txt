@@ -140,8 +140,8 @@ IF (BUILD_EXAMPLES)
 	ADD_EXECUTABLE(contract_example ${CONTRACT_EXAMPLE_SRCS})
 	TARGET_LINK_LIBRARIES(contract_example ${PROJECT_NAME} ${CURL_LIBRARIES})
 
-	CONFIGURE_FILE(examples/contract.json ${CMAKE_BINARY_DIR}/contract.json COPY_ONLY)
-	CONFIGURE_FILE(examples/data.json ${CMAKE_BINARY_DIR}/data.json COPY_ONLY)
+	CONFIGURE_FILE(examples/contract.json ${CMAKE_BINARY_DIR}/contract.json COPYONLY)
+	CONFIGURE_FILE(examples/data.json ${CMAKE_BINARY_DIR}/data.json COPYONLY)
 ENDIF()
 
 # Offer the user the choice of overriding the installation directories

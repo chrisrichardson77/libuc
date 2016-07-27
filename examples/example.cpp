@@ -11,9 +11,9 @@
 
 //The header univcont.h includes all the different pieces of the libuc library.
 //#include "univcont.h"
-#include "ucontainer.h"
-#include "ucio.h"
-#include "buffer.h"
+#include <uc/ucontainer.h>
+#include <uc/ucio.h>
+#include <uc/buffer.h>
 
 using namespace std;
 

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string.h>
-#include "uccontract.h"
-#include "ucontainer.h"
-#include "ucio.h"
+#include <uc/uccontract.h>
+#include <uc/ucontainer.h>
+#include <uc/ucio.h>
 
 using namespace JAD;
 
