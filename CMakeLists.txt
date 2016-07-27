@@ -5,8 +5,6 @@ PROJECT(Uc CXX)
 OPTION(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_UNIT_TESTS "Include unit tests" ON)
 option(BUILD_SYSTEM_TESTS "Include system tests" OFF)
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
 
 INCLUDE(version.cmake)
 
@@ -148,7 +146,7 @@ ENDIF()
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(INSTALL_CMAKE_DIR "lib/CMake/${PROJECT_NAME}" CACHE PATH "Installation directory for CMake files")
+set(INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME} CACHE PATH "Installation directory for CMake files")
 
 # Make relative paths absolute
 foreach(p LIB BIN INCLUDE CMAKE)
