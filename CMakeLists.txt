@@ -172,7 +172,7 @@ set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" "${PROJECT_BINARY_DIR}")
 configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" @ONLY)
 
 # ... for the install tree
-set(CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+set(CONF_INCLUDE_DIRS "\${UC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake" @ONLY)
 
 # ... for both

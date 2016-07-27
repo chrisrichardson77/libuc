@@ -1,6 +1,6 @@
-#line 2 "/home/jenkins/workspace/Messenger/Messenger C++ (Commit)/uc-build/ucoder_json.cpp"
+#line 2 "ucoder_json.cpp"
 
-#line 4 "/home/jenkins/workspace/Messenger/Messenger C++ (Commit)/uc-build/ucoder_json.cpp"
+#line 4 "ucoder_json.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -486,7 +486,7 @@ static yyconst flex_int16_t yy_chk[127] =
 
    static int line_number = 1;
 
-#line 490 "/home/jenkins/workspace/Messenger/Messenger C++ (Commit)/uc-build/ucoder_json.cpp"
+#line 490 "ucoder_json.cpp"
 
 #define INITIAL 0
 
@@ -620,7 +620,7 @@ YY_DECL
 	{
 #line 58 "flex/json_parser.lex"
 
-#line 624 "/home/jenkins/workspace/Messenger/Messenger C++ (Commit)/uc-build/ucoder_json.cpp"
+#line 624 "ucoder_json.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -748,7 +748,7 @@ YY_RULE_SETUP
 #line 72 "flex/json_parser.lex"
 ECHO;
 	YY_BREAK
-#line 752 "/home/jenkins/workspace/Messenger/Messenger C++ (Commit)/uc-build/ucoder_json.cpp"
+#line 752 "ucoder_json.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
