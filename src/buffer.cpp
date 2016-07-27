@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string.h>
-#include "buffer.h"
+#include <uc/buffer.h>
 
 /*
   This file contains member definitions for the buffer

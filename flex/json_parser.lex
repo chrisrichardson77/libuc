@@ -11,9 +11,9 @@
  * http://www.greatpanic.com/code.html
  */
 
-#include "ucontainer.h"
-#include "buffer.h"
-#include "ucio.h"
+#include <uc/ucontainer.h>
+#include <uc/buffer.h>
+#include <uc/ucio.h>
 #define JSON_DECODE_OPEN_MAP 1
 #define JSON_DECODE_CLOSE_MAP 2
 #define JSON_DECODE_OPEN_ARRAY 3

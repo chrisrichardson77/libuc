@@ -8,7 +8,7 @@
  */
 
 #include <iostream>
-#include "ucmysql.h"
+#include <uc/ucmysql.h>
 
 using namespace std;
 

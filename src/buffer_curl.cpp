@@ -9,7 +9,7 @@
 
 /* Routines to use Buffers with curl. */
 
-#include "buffer.h"
+#include <uc/buffer.h>
 #include <curl/curl.h>
 #include <cstring>
 

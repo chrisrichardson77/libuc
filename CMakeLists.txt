@@ -129,7 +129,7 @@ SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
 INSTALL(TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}Targets
     DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-INSTALL(DIRECTORY include/ DESTINATION include/uc FILES_MATCHING PATTERN "*.h")
+INSTALL(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.h")
 
 IF (BUILD_EXAMPLES)
 	SET(EXAMPLE_SRCS examples/example.cpp)
@@ -169,22 +169,23 @@ export(PACKAGE ${PROJECT_NAME})
 file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
 # ... for the build tree
 set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" "${PROJECT_BINARY_DIR}")
-configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}/UcConfig.cmake" @ONLY)
+configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" @ONLY)
 
 # ... for the install tree
-set(CONF_INCLUDE_DIRS "\${UC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UcConfig.cmake" @ONLY)
+set(CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+configure_file(cmake/UcConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake" @ONLY)
 
 # ... for both
-configure_file(cmake/UcConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/UcConfigVersion.cmake" @ONLY)
+configure_file(cmake/UcConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" @ONLY)
 
 # Install the UcConfig.cmake and UcConfigVersion.cmake
 install(FILES
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UcConfig.cmake"
-  "${PROJECT_BINARY_DIR}/UcConfigVersion.cmake"
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
   DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 # Install the export set for use with the install-tree
 install(EXPORT ${PROJECT_NAME}Targets DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 ADD_SUBDIRECTORY(tests)
+

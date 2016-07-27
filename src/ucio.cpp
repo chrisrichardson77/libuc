@@ -10,10 +10,10 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "ucontainer.h"
-#include "ucio.h"
-#include "buffer.h"
-#include "string_util.h"
+#include <uc/ucontainer.h>
+#include <uc/ucio.h>
+#include <uc/buffer.h>
+#include <uc/string_util.h>
 
 /*
   Routines for doing io with universal containers. Mostly, there are

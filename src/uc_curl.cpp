@@ -12,9 +12,9 @@
   UniversalContainers.
  */
 
-#include "ucontainer.h"
-#include "buffer.h"
-#include "uc_web.h"
+#include <uc/ucontainer.h>
+#include <uc/buffer.h>
+#include <uc/uc_web.h>
 
 namespace JAD {
   /*

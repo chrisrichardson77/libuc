@@ -8,7 +8,7 @@
  */
 
 #include <iostream>
-#include "ucsqlite.h"
+#include <uc/ucsqlite.h>
 
 using namespace std;
 

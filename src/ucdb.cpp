@@ -7,7 +7,7 @@
  * http://www.greatpanic.com/code.html
  */
 
-#include "ucdb.h"
+#include <uc/ucdb.h>
 
 /*
   Method methods which are inherited by the concrete implementations of

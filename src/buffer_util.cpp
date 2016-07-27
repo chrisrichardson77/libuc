@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "buffer.h"
+#include <uc/buffer.h>
 #include <unistd.h>
 
 using namespace std;

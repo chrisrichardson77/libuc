@@ -9,7 +9,7 @@
 
 #include <string>
 #include <cstring>
-#include "uccontract.h"
+#include <uc/uccontract.h>
 
 namespace JAD {
   unsigned UCContract::compare_map(const UniversalContainer& uc) const

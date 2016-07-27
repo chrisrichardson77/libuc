@@ -19,11 +19,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "ucontainer.h"
-#include "ucio.h"
-#include "uc_web.h"
-#include "string_util.h"
-#include "buffer.h"
+#include <uc/ucontainer.h>
+#include <uc/ucio.h>
+#include <uc/uc_web.h>
+#include <uc/string_util.h>
+#include <uc/buffer.h>
 
 using namespace std;
 
