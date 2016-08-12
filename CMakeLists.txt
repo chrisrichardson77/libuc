@@ -79,7 +79,7 @@ IF (FLEX_FOUND)
 	FLEX_TARGET_CUSTOM(flex_json flex/json_parser.lex ${JSON_UCODER_CPP})
 ELSE (FLEX_FOUND)
 	MESSAGE(WARNING "Flex not found: will use fallback 'flex/ucoder_json.cpp.fallback'")
-	CONFIGURE_FILE(flex/ucoder_json.cpp.fallback ${JSON_UCODER_CPP COPYONLY)
+	CONFIGURE_FILE(flex/ucoder_json.cpp.fallback ${JSON_UCODER_CPP} COPYONLY)
 ENDIF (FLEX_FOUND)
 
 # MySql integration
